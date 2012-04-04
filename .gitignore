@@ -2,4 +2,4 @@
 target/
 
 # ignore site folder
-documentation/
+#documentation/
