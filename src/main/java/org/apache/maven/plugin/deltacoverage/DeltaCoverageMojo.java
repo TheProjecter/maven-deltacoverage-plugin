@@ -16,9 +16,9 @@ import org.apache.maven.plugin.deltacoverage.scm.SCMExecutorFactory;
 /**
  * Mojo to generate delta coverage report. Entry point for maven plugin. 
  * Delta coverage is calculated by taking into consideration current code coverage and code changed since a specific baseline version.
- * Hence mandatorily needs parameters <code>coverageReport</code> and <code>baselineVersion</code>.
+ * Hence needs parameters <code>coverageReport</code> and <code>baselineVersion</code>.
  * 
- * @author Abhijeet_Kesarkar
+ * @author Abhijeet_Kesarkar 
  * @goal deltacoverage
  */
 public class DeltaCoverageMojo extends AbstractMojo {
