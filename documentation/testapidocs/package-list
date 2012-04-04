@@ -1,0 +1,5 @@
+org.apache.maven.plugin.deltacoverage
+org.apache.maven.plugin.deltacoverage.coverage
+org.apache.maven.plugin.deltacoverage.report
+org.apache.maven.plugin.deltacoverage.scm
+org.apache.maven.plugin.deltacoverage.util

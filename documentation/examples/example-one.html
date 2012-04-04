@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Maven DeltaCoverage Plugin - </title>
+    <style type="text/css" media="all">
+      @import url("../css/maven-base.css");
+      @import url("../css/maven-theme.css");
+      @import url("../css/site.css");
+    </style>
+    <link rel="stylesheet" href="../css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                    <span id="bannerLeft">
+    
+            Maven DeltaCoverage Plugin
+    
+            </span>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2012-04-04
+                      </div>
+            <div class="xright">      
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>Overview</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="../index.html">Introduction</a>
+          </li>
+              
+    <li class="none">
+                    <a href="../plugin-info.html">Goals</a>
+          </li>
+              
+    <li class="none">
+                    <a href="../usage.html">Usage</a>
+          </li>
+              
+    <li class="none">
+                    <a href="../faq.html">FAQ</a>
+          </li>
+          </ul>
+              <h5>Examples</h5>
+            <ul>
+              
+    <li class="none">
+              <strong>Delta Coverage for current release</strong>
+        </li>
+          </ul>
+              <h5>Project Documentation</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="../project-info.html">Project Information</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="../project-reports.html">Project Reports</a>
+                </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="../images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>Example</h2>
+<div class="section"><h3>Delta coverage for current release</h3>
+<p>Take an examples where code is being developed for a particular release, say for release 10.2. Now you start development of next release, 10.3, in parallel. As a result, you create a branch for release 10.2 and all further development for 10.2 happens on the branch. The start of the 10.2 branch is tagged as <tt>Root_branch_10_20</tt>. The development for 10.3 continues on the main branch (HEAD). </p>
+<div class="source"><pre>                      |
+ Root_branch_10_20 -&gt; |--------|
+                      |        |
+                      |        |
+                      |        | &lt;- branch for 10.2
+                      |
+                      |
+                      |
+                      | &lt;- branch (HEAD) for 10.3
+</pre>
+</div>
+<p>Now when you run code coverage for 10.3, a module coverage of 80% would not indicate if the code that has changed for 10.3 has been covered or not. As a result, you would not be sure if you have sufficient coverage through unit tests. If you get to see code coverage only for lines changed for 10.3, it would give more realistic picture of code coverage for current release.</p>
+<p><tt>deltacoverage</tt> plugin can be used to find this delta coverage for current release.</p>
+<div class="section"><h4>Configuring deltacoverage plugin</h4>
+<ul><li>As a first step, add a new plugin entry in the <tt>plugins</tt> section of pom.xml as follows:<div class="source"><pre>&lt;build&gt;
+    &lt;plugins&gt;
+        ...
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-deltacoverage-plugin&lt;/artifactId&gt;
+            &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+        &lt;/plugin&gt;
+        ...
+    &lt;/plugins&gt;
+&lt;build&gt;</pre>
+</div>
+</li>
+<li>Make sure the plugin is available in your plugin repository. If not, upload the deltacoverage plugin jar found in the target folder to the maven repository using mvn <a href="http://maven.apache.org/plugins/maven-deploy-plugin/usage.html" class="externalLink">deploy-file</a> goal.</li>
+<li>Ensure that cobertura plugin is configured to generate report in xml format (as well). By default, cobertura generates html report. </li>
+<li>Configure coverage report path. If cobertura plugin generates its report at path other than its default path, then you need to configure deltacoverage plugin to specify the location of the coverage report path. Example:<div class="source"><pre>&lt;build&gt;
+    &lt;plugins&gt;
+        ...
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-deltacoverage-plugin&lt;/artifactId&gt;
+            &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;coverageReport&gt;${project.build.outputDirectory}/cobertura/coverage.xml&lt;/coverageReport&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+        ...
+    &lt;/plugins&gt;
+&lt;build&gt;</pre>
+</div>
+</li>
+<li>Specify the baseline version. In this case, tag name <tt>Root_branch_10_20</tt> indicates the version that latest code be compared with to get details of changes done for current release. Baseline version can be configured using property <tt>delta.baseline</tt>. It will be best if this is provided from command line, since what version to compare with can be pretty dynamic (release on release).</li>
+<li>With configuration so far, execute the following command<div class="source"><pre> mvn cobertura:cobertura deltacoverage:deltacoverage -Ddelta.baseline=Root_branch_10_20</pre>
+</div>
+<p>This will generate delta coverage report in xml and html format in the <tt>target</tt> directory. </p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2012
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
