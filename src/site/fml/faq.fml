@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs id="FAQ" title="Frequently Asked Questions">
+  <part id="General">
+    <faq id="cobertura">
+      <question>Does it support other code coverage reports than cobertura?</question>
+      <answer>
+        <p>
+          No. Currently only cobertura coverage report format is supported, however feel free to contribute to add support for more formats.
+        </p>
+      </answer>
+    </faq>
+    <faq id="CVS">
+      <question>Does it support SCM repositories other than CVS?</question>
+      <answer>
+        <p>
+          No. Currently only CVS repository is supported. However feel free to contribute to add support for more SCM repositories.
+        </p>
+      </answer>
+    </faq>
+  </part>
+</faqs>

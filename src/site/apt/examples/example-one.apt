@@ -1,0 +1,82 @@
+Example
+
+* Delta coverage for current release
+
+  Take an examples where code is being developed for a particular release, say for release 10.2. Now you start development of next 
+  release, 10.3, in parallel. As a result, you create a branch for release 10.2 and all further development for 10.2 happens on the branch.
+  The start of the 10.2 branch is tagged as <<<Root_branch_10_20>>>. The development for 10.3 continues on the main branch (HEAD).  
+
+----
+                      |
+ Root_branch_10_20 -> |--------|
+                      |        |
+                      |        |
+                      |        | <- branch for 10.2
+                      |
+                      |
+                      |
+                      | <- branch (HEAD) for 10.3
+
+----
+  
+  Now when you run code coverage for 10.3, a module coverage of 80% would not indicate if the code that has changed for 10.3 has been 
+  covered or not. As a result, you would not be sure if you have sufficient coverage through unit tests. If you get to see code coverage 
+  only for lines changed for 10.3, it would give more realistic picture of code coverage for current release.
+  
+  <<<deltacoverage>>> plugin can be used to find this delta coverage for current release.
+  
+** Configuring deltacoverage plugin
+
+  * As a first step, add a new plugin entry in the <<<plugins>>> section of pom.xml as follows:
+
++---
+<build>
+    <plugins>
+        ...
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deltacoverage-plugin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </plugin>
+        ...
+    </plugins>
+<build>
++---  
+
+  * Make sure the plugin is available in your plugin repository. If not, upload the deltacoverage plugin jar found in the target folder
+   to the maven repository using mvn {{{http://maven.apache.org/plugins/maven-deploy-plugin/usage.html}deploy-file}} goal.
+
+  * Ensure that cobertura plugin is configured to generate report in xml format (as well). By default, cobertura generates html report.  
+  
+  * Configure coverage report path. If cobertura plugin generates its report at path other than its default path, then 
+  you need to configure deltacoverage plugin to specify the location of the coverage report path. Example:
+    
++---
+<build>
+    <plugins>
+        ...
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deltacoverage-plugin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <configuration>
+                <coverageReport>${project.build.outputDirectory}/cobertura/coverage.xml</coverageReport>
+            </configuration>
+        </plugin>
+        ...
+    </plugins>
+<build>
++---  
+    
+  * Specify the baseline version. In this case, tag name <<<Root_branch_10_20>>> indicates the version that latest code be compared
+  with to get details of changes done for current release. Baseline version can be configured using property <<<delta.baseline>>>. 
+  It will be best if this is provided from command line, since what version to compare with can be pretty dynamic (release on release).
+  
+  * With configuration so far, execute the following command
+
++----
+ mvn cobertura:cobertura deltacoverage:deltacoverage -Ddelta.baseline=Root_branch_10_20
++---- 
+  
+  This will generate delta coverage report in xml and html format in the <<<target>>> directory. 
+  

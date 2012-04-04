@@ -1,0 +1,44 @@
+Usage
+
+* Generating delta coverage
+  
+  To generate delta coverage report, typically execute:
+  
++----
+ mvn deltacoverage:deltacoverage 
++---- 
+  
+  This will generate delta coverage report in xml and html format in the <<<target>>> directory. 
+  
+  * <<Note>>: It is necessary that you already have a cobertura xml coverage report generated.
+  The default path for coverage report is same as the default path of cobertura plugin <<<${project.reporting.outputDirectory}/cobertura/coverage.xml>>>
+  You can specify a different path by using <<<delta.coverage.reportPath>>> property.
+  Typically, you may specify a different path by configuring the plugin in <<<pom.xml>>>:
+
++---
+<build>
+    <plugins>
+        ...
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deltacoverage-plugin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <configuration>
+                <coverageReport>${project.build.outputDirectory}/cobertura/coverage.xml</coverageReport>
+            </configuration>
+        </plugin>
+        ...
+    </plugins>
+<build>
++---  
+   
+  * <<Note>>: It is also necessary that you provide a <<<baselineVersion>>>. This is the CVS version/tag/branch with which the current code is
+  compared to find the code changes and used for calculating the delta code coverage.
+  You can specify the baseline version by specifying <<<delta.baseline>>> property, typically from the command line.
+  
+  []
+  Hence, you would typically execute following command:
+  
++----
+ mvn cobertura:cobertura deltacoverage:deltacoverage -Ddelta.baseline=Root_branch_10_20
++----  
