@@ -1,2 +1,5 @@
 # ignore target folder
 target/
+
+# ignore site folder
+documentation/
